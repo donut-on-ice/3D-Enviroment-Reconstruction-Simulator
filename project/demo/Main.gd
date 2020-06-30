@@ -21,9 +21,9 @@ func _ready():
 
 func _physics_process(delta):
 	var move_dir = Vector3(
-		Input.get_action_strength("camera_forward") - Input.get_action_strength("camera_backward"),
-		Input.get_action_strength("camera_up") - Input.get_action_strength("camera_down"),
-		Input.get_action_strength("camera_left") - Input.get_action_strength("camera_left")
+		Input.get_action_strength("camera_right") - Input.get_action_strength("camera_left"),
+		Input.get_action_strength("camera_down") - Input.get_action_strength("camera_up"),
+		Input.get_action_strength("camera_backward") - Input.get_action_strength("camera_forward")
 	)
 	
 	$Camera.translate(move_dir * camera_speed * delta)
@@ -47,9 +47,5 @@ func _input(event):
 	if event is InputEventMouseMotion and !is_paused:
 	
 		$Camera.rotate_y(deg2rad(-event.relative.x*mouse_sens))
-		var changev=-event.relative.y*mouse_sens
-	
-		if camera_anglev+changev>-50 and camera_anglev+changev<50:
-	
-			camera_anglev+=changev
-			$Camera.rotate_x(deg2rad(changev))
+		var changev=event.relative.y * mouse_sens * 0.01 
+		$Camera.rotate_object_local(Vector3.LEFT, changev)
